@@ -1,10 +1,10 @@
 const { Schema, Types } = require('mongoose');
-
+const moment = require('moment'); 
 const ReactionSchema = new Schema(
     {
         reactionId:{
             type: Schema.Types.ObjectId,
-            default: () =>new Types.ObjectId()
+            default: () => new Types.ObjectId()
         },
         reactionBody:{
             type: String,
@@ -17,8 +17,15 @@ const ReactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            get: v => moment(v).format('DD/MM/YYYY hh:mm a') // getter function called when the db servs data
+
         },
+    },
+    {
+        toJSON: {
+            getters: true, // Remember to turn on getters in the json output
+          },
     }
 );
 
