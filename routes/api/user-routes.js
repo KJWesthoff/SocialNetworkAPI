@@ -7,7 +7,7 @@ const  {User, Thought} = require('../../models');
 
 const getAllUsers = ((req,res) => {
     User.find({})
-    .populate({path: 'friends', select: "-__v -_id"})
+    .populate({path: 'friends', select: "-__v"})
     .then(dbUser => res.json(dbUser))
     .catch(err => res.status(400).json(err))
 })
@@ -23,6 +23,8 @@ const createUser = ((req,res)=>{
 
 const getUserById = ((req,res) => {
     User.findOne({_id:req.params.id})
+    .populate({path: 'friends', select: "-__v"})
+    .populate({path: 'thoughts', select: "-__v"})
     .then(dbUser => {
         if(!dbUser){
             res.status(404).json({message: "No user with that id"});
